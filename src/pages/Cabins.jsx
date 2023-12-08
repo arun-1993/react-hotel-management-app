@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
 
+import CabinForm from "../features/cabins/CabinForm.jsx";
 import CabinTable from "../features/cabins/CabinTable.jsx";
-import CreateCabinForm from "../features/cabins/CreateCabinForm.jsx";
 import Button from "../ui/Button.jsx";
 import Heading from "../ui/Heading.jsx";
 import Row from "../ui/Row.jsx";
@@ -21,7 +21,7 @@ export default function Cabins() {
                 <Button onClick={() => setShowForm((showForm) => !showForm)}>
                     Add new cabin
                 </Button>
-                {showForm && <CreateCabinForm />}
+                {showForm && <CabinForm />}
             </Row>
         </Fragment>
     );

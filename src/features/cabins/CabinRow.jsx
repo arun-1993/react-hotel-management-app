@@ -1,9 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Fragment, useState } from "react";
 import toast from "react-hot-toast";
 import styled from "styled-components";
 
 import { deleteCabin } from "../../services/apiCabins";
 import { formatCurrency } from "../../utils/helpers";
+import CabinForm from "./CabinForm";
 
 const TableRow = styled.div`
     display: grid;
@@ -45,6 +47,7 @@ const Discount = styled.div`
 `;
 
 export default function CabinRow({ cabin }) {
+    const [showEditForm, setShowEditForm] = useState(false);
     const queryClient = useQueryClient();
     const {
         id: cabinId,
@@ -65,15 +68,30 @@ export default function CabinRow({ cabin }) {
     });
 
     return (
-        <TableRow role="row">
-            <Img src={image} />
-            <Cabin>{name}</Cabin>
-            <div>Fits up to {maxCapacity} guests</div>
-            <Price>{formatCurrency(regularPrice)}</Price>
-            <Discount>{formatCurrency(discount)}</Discount>
-            <button onClick={() => mutate(cabinId)} disabled={isDeleting}>
-                Delete
-            </button>
-        </TableRow>
+        <Fragment>
+            <TableRow role="row">
+                <Img src={image} />
+                <Cabin>{name}</Cabin>
+                <div>Fits up to {maxCapacity} guests</div>
+                <Price>{formatCurrency(regularPrice)}</Price>
+                <Discount>{formatCurrency(discount)}</Discount>
+                <div>
+                    <button
+                        onClick={() =>
+                            setShowEditForm((showEditForm) => !showEditForm)
+                        }
+                    >
+                        Edit
+                    </button>
+                    <button
+                        onClick={() => mutate(cabinId)}
+                        disabled={isDeleting}
+                    >
+                        Delete
+                    </button>
+                </div>
+            </TableRow>
+            {showEditForm && <CabinForm cabin={cabin} />}
+        </Fragment>
     );
 }
