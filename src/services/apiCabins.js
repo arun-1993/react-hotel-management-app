@@ -1,7 +1,10 @@
 import supabase, { supabaseUrl } from "./supabase";
 
 export async function getCabins() {
-    const { data, error } = await supabase.from("cabins").select("*");
+    const { data, error } = await supabase
+        .from("cabins")
+        .select("*")
+        .order("name");
 
     if (error) {
         console.error(error);
@@ -34,7 +37,7 @@ export async function createEditCabin(cabin, id = null) {
     }
 
     if (cabin.image === null || cabin.image === undefined) delete cabin.image;
-    else cabin.image = imagePath;
+    else cabin.image = imagePath || cabin.image;
 
     if (id) query = query.update({ ...cabin }).eq("id", id);
     else query = query.insert([{ ...cabin }]);
