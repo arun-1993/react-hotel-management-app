@@ -1,9 +1,7 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Fragment, useState } from "react";
-import toast from "react-hot-toast";
 import styled from "styled-components";
 
-import { deleteCabin } from "../../services/apiCabins";
+import { useDeleteCabin } from "../../hooks/useDeleteCabin";
 import { formatCurrency } from "../../utils/helpers";
 import CabinForm from "./CabinForm";
 
@@ -48,7 +46,8 @@ const Discount = styled.div`
 
 export default function CabinRow({ cabin }) {
     const [showEditForm, setShowEditForm] = useState(false);
-    const queryClient = useQueryClient();
+    const { isDeleting, deleteCabin } = useDeleteCabin();
+
     const {
         id: cabinId,
         name,
@@ -58,15 +57,6 @@ export default function CabinRow({ cabin }) {
         image,
     } = cabin;
 
-    const { isLoading: isDeleting, mutate } = useMutation({
-        mutationFn: deleteCabin,
-        onSuccess: () => {
-            toast.success("Cabin deleted");
-            queryClient.invalidateQueries({ queryKey: ["cabins"] });
-        },
-        onError: (error) => toast.error(error.message),
-    });
-
     return (
         <Fragment>
             <TableRow role="row">
@@ -74,7 +64,11 @@ export default function CabinRow({ cabin }) {
                 <Cabin>{name}</Cabin>
                 <div>Fits up to {maxCapacity} guests</div>
                 <Price>{formatCurrency(regularPrice)}</Price>
-                <Discount>{formatCurrency(discount)}</Discount>
+                {Number(discount) ? (
+                    <Discount>{formatCurrency(discount)}</Discount>
+                ) : (
+                    <span>&mdash;</span>
+                )}
                 <div>
                     <button
                         onClick={() =>
@@ -84,7 +78,7 @@ export default function CabinRow({ cabin }) {
                         Edit
                     </button>
                     <button
-                        onClick={() => mutate(cabinId)}
+                        onClick={() => deleteCabin(cabinId)}
                         disabled={isDeleting}
                     >
                         Delete

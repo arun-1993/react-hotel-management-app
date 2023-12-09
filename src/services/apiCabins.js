@@ -33,10 +33,11 @@ export async function createEditCabin(cabin, id = null) {
         }
     }
 
-    cabin.image === undefined ? delete cabin.image : (cabin.image = imagePath);
+    if (cabin.image === null || cabin.image === undefined) delete cabin.image;
+    else cabin.image = imagePath;
 
     if (id) query = query.update({ ...cabin }).eq("id", id);
-    else query = query.insert([{ ...cabin, image: imagePath }]);
+    else query = query.insert([{ ...cabin }]);
 
     const { data, error } = await query.select();
 
