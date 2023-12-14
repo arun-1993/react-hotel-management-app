@@ -144,7 +144,7 @@ export default function CabinForm({ cabin = {}, onClose }) {
 
             <FormRow>
                 <Button
-                    variation="secondary"
+                    $variation="secondary"
                     type="reset"
                     disabled={isLoading}
                     onClick={() => onClose?.()}
