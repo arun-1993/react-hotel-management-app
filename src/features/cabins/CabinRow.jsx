@@ -1,9 +1,10 @@
-import { Fragment, useState } from "react";
 import { HiPencilSquare, HiSquare2Stack, HiTrash } from "react-icons/hi2";
 import styled from "styled-components";
 
 import { useCreateCabin } from "../../hooks/useCreateCabin";
 import { useDeleteCabin } from "../../hooks/useDeleteCabin";
+import ConfirmDelete from "../../ui/ConfirmDelete";
+import Modal from "../../ui/Modal";
 import { formatCurrency } from "../../utils/helpers";
 import CabinForm from "./CabinForm";
 
@@ -47,7 +48,6 @@ const Discount = styled.div`
 `;
 
 export default function CabinRow({ cabin }) {
-    const [showEditForm, setShowEditForm] = useState(false);
     const { isDeleting, deleteCabin } = useDeleteCabin();
     const { isCreating, createCabin } = useCreateCabin();
 
@@ -68,46 +68,51 @@ export default function CabinRow({ cabin }) {
     }
 
     return (
-        <Fragment>
-            <TableRow role="row">
-                <Img src={image} />
-                <Cabin>{name}</Cabin>
-                <div>Fits up to {maxCapacity} guests</div>
-                <Price>{formatCurrency(regularPrice)}</Price>
-                {Number(discount) ? (
-                    <Discount>{formatCurrency(discount)}</Discount>
-                ) : (
-                    <span>&mdash;</span>
-                )}
-                <div>
-                    <button
-                        title="Duplicate Cabin"
-                        disabled={isBusy}
-                        onClick={duplicateCabin}
-                    >
-                        <HiSquare2Stack />
-                    </button>
+        <TableRow role="row">
+            <Img src={image} />
+            <Cabin>{name}</Cabin>
+            <div>Fits up to {maxCapacity} guests</div>
+            <Price>{formatCurrency(regularPrice)}</Price>
+            {Number(discount) ? (
+                <Discount>{formatCurrency(discount)}</Discount>
+            ) : (
+                <span>&mdash;</span>
+            )}
+            <div>
+                <button
+                    title="Duplicate Cabin"
+                    disabled={isBusy}
+                    onClick={duplicateCabin}
+                >
+                    <HiSquare2Stack />
+                </button>
 
-                    <button
-                        title="Edit Cabin"
-                        disabled={isBusy}
-                        onClick={() =>
-                            setShowEditForm((showEditForm) => !showEditForm)
-                        }
-                    >
-                        <HiPencilSquare />
-                    </button>
+                <Modal>
+                    <Modal.Toggle target="updateCabinForm">
+                        <button title="Edit Cabin" disabled={isBusy}>
+                            <HiPencilSquare />
+                        </button>
+                    </Modal.Toggle>
 
-                    <button
-                        title="Delete Cabin"
-                        disabled={isBusy}
-                        onClick={() => deleteCabin(cabinId)}
-                    >
-                        <HiTrash />
-                    </button>
-                </div>
-            </TableRow>
-            {showEditForm && <CabinForm cabin={cabin} />}
-        </Fragment>
+                    <Modal.Window name="updateCabinForm">
+                        <CabinForm cabin={cabin} />
+                    </Modal.Window>
+
+                    <Modal.Toggle target="deleteCabin">
+                        <button title="Delete Cabin" disabled={isBusy}>
+                            <HiTrash />
+                        </button>
+                    </Modal.Toggle>
+
+                    <Modal.Window name="deleteCabin">
+                        <ConfirmDelete
+                            resourceName="cabin"
+                            onConfirm={() => deleteCabin(cabinId)}
+                            disabled={isBusy}
+                        />
+                    </Modal.Window>
+                </Modal>
+            </div>
+        </TableRow>
     );
 }

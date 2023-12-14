@@ -9,7 +9,7 @@ import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 import Textarea from "../../ui/Textarea";
 
-export default function CabinForm({ cabin = {} }) {
+export default function CabinForm({ cabin = {}, onClose }) {
     const { isCreating, createCabin } = useCreateCabin();
     const { isEditing, editCabin } = useEditCabin();
     const { register, handleSubmit, reset, getValues, formState } = useForm({
@@ -26,18 +26,31 @@ export default function CabinForm({ cabin = {} }) {
         if (isEditSession) {
             editCabin(
                 { cabin: { ...data, image: image }, id: cabin.id },
-                { onSuccess: () => reset(getValues()) }
+                {
+                    onSuccess: () => {
+                        reset(getValues());
+                        onClose?.();
+                    },
+                }
             );
         } else {
             createCabin(
                 { ...data, image: image },
-                { onSuccess: () => reset() }
+                {
+                    onSuccess: () => {
+                        reset();
+                        onClose?.();
+                    },
+                }
             );
         }
     }
 
     return (
-        <Form onSubmit={handleSubmit(onSubmit)}>
+        <Form
+            onSubmit={handleSubmit(onSubmit)}
+            type={onClose ? "modal" : "regular"}
+        >
             <FormRow label="Cabin name" error={errors?.name?.message}>
                 <Input
                     type="text"
@@ -130,7 +143,12 @@ export default function CabinForm({ cabin = {} }) {
             </FormRow>
 
             <FormRow>
-                <Button variation="secondary" type="reset" disabled={isLoading}>
+                <Button
+                    variation="secondary"
+                    type="reset"
+                    disabled={isLoading}
+                    onClick={() => onClose?.()}
+                >
                     Cancel
                 </Button>
                 <Button disabled={isLoading}>

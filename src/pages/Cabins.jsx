@@ -1,14 +1,11 @@
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 
-import CabinForm from "../features/cabins/CabinForm.jsx";
 import CabinTable from "../features/cabins/CabinTable.jsx";
-import Button from "../ui/Button.jsx";
+import CreateCabin from "../features/cabins/CreateCabin.jsx";
 import Heading from "../ui/Heading.jsx";
 import Row from "../ui/Row.jsx";
 
 export default function Cabins() {
-    const [showForm, setShowForm] = useState(false);
-
     return (
         <Fragment>
             <Row>
@@ -18,10 +15,7 @@ export default function Cabins() {
 
             <Row type="vertical">
                 <CabinTable />
-                <Button onClick={() => setShowForm((showForm) => !showForm)}>
-                    Add new cabin
-                </Button>
-                {showForm && <CabinForm />}
+                <CreateCabin />
             </Row>
         </Fragment>
     );
