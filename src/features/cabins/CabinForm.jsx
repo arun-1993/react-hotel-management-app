@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 
 import { useCreateCabin } from "../../hooks/useCreateCabin";
-import { useEditCabin } from "../../hooks/useEditCabin";
+import { useUpdateCabin } from "../../hooks/useUpdateCabin";
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Form from "../../ui/Form";
@@ -11,20 +11,20 @@ import Textarea from "../../ui/Textarea";
 
 export default function CabinForm({ cabin = {}, onClose }) {
     const { isCreating, createCabin } = useCreateCabin();
-    const { isEditing, editCabin } = useEditCabin();
+    const { isUpdating, updateCabin } = useUpdateCabin();
     const { register, handleSubmit, reset, getValues, formState } = useForm({
         defaultValues: cabin,
     });
 
     const { errors } = formState;
-    const isEditSession = Object.keys(cabin).length === 0 ? false : true;
-    const isLoading = isCreating || isEditing;
+    const isUpdateSession = Object.keys(cabin).length === 0 ? false : true;
+    const isLoading = isCreating || isUpdating;
 
     function onSubmit(data) {
         const image = data.image instanceof Object ? data.image[0] : null;
 
-        if (isEditSession) {
-            editCabin(
+        if (isUpdateSession) {
+            updateCabin(
                 { cabin: { ...data, image: image }, id: cabin.id },
                 {
                     onSuccess: () => {
@@ -135,7 +135,7 @@ export default function CabinForm({ cabin = {}, onClose }) {
                     accept="image/*"
                     disabled={isLoading}
                     {...register("image", {
-                        required: isEditSession
+                        required: isUpdateSession
                             ? false
                             : "Cabin image is required",
                     })}
@@ -152,7 +152,7 @@ export default function CabinForm({ cabin = {}, onClose }) {
                     Cancel
                 </Button>
                 <Button disabled={isLoading}>
-                    {isEditSession ? "Edit Cabin" : "Create Cabin"}
+                    {isUpdateSession ? "Update Cabin" : "Create Cabin"}
                 </Button>
             </FormRow>
         </Form>

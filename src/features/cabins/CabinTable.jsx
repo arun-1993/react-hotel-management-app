@@ -1,4 +1,5 @@
 import { useCabins } from "../../hooks/useCabins.js";
+import Menus from "../../ui/Menus.jsx";
 import Spinner from "../../ui/Spinner.jsx";
 import Table from "../../ui/Table.jsx";
 import CabinRow from "./CabinRow.jsx";
@@ -19,10 +20,14 @@ export default function CabinTable() {
                 <div></div>
             </Table.Header>
 
-            <Table.Body
-                data={cabins}
-                render={(cabin) => <CabinRow cabin={cabin} key={cabin.id} />}
-            />
+            <Menus>
+                <Table.Body
+                    data={cabins}
+                    render={(cabin) => (
+                        <CabinRow cabin={cabin} key={cabin.id} />
+                    )}
+                />
+            </Menus>
         </Table>
     );
 }

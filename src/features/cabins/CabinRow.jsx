@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useCreateCabin } from "../../hooks/useCreateCabin";
 import { useDeleteCabin } from "../../hooks/useDeleteCabin";
 import ConfirmDelete from "../../ui/ConfirmDelete";
+import Menus from "../../ui/Menus";
 import Modal from "../../ui/Modal";
 import Table from "../../ui/Table";
 import { formatCurrency } from "../../utils/helpers";
@@ -68,30 +69,42 @@ export default function CabinRow({ cabin }) {
                 <span>&mdash;</span>
             )}
             <div>
-                <button
-                    title="Duplicate Cabin"
-                    disabled={isBusy}
-                    onClick={duplicateCabin}
-                >
-                    <HiSquare2Stack />
-                </button>
-
                 <Modal>
-                    <Modal.Toggle target="updateCabinForm">
-                        <button title="Edit Cabin" disabled={isBusy}>
-                            <HiPencilSquare />
-                        </button>
-                    </Modal.Toggle>
+                    <Menus.Menu>
+                        <Menus.Toggle menuId={cabinId} />
+
+                        <Menus.List menuId={cabinId}>
+                            <Menus.Button
+                                icon={<HiSquare2Stack />}
+                                disabled={isBusy}
+                                onClick={duplicateCabin}
+                            >
+                                Duplicate
+                            </Menus.Button>
+
+                            <Modal.Toggle target="updateCabinForm">
+                                <Menus.Button
+                                    icon={<HiPencilSquare />}
+                                    disabled={isBusy}
+                                >
+                                    Update
+                                </Menus.Button>
+                            </Modal.Toggle>
+
+                            <Modal.Toggle target="deleteCabin">
+                                <Menus.Button
+                                    icon={<HiTrash />}
+                                    disabled={isBusy}
+                                >
+                                    Delete
+                                </Menus.Button>
+                            </Modal.Toggle>
+                        </Menus.List>
+                    </Menus.Menu>
 
                     <Modal.Window name="updateCabinForm">
                         <CabinForm cabin={cabin} />
                     </Modal.Window>
-
-                    <Modal.Toggle target="deleteCabin">
-                        <button title="Delete Cabin" disabled={isBusy}>
-                            <HiTrash />
-                        </button>
-                    </Modal.Toggle>
 
                     <Modal.Window name="deleteCabin">
                         <ConfirmDelete

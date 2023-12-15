@@ -37,7 +37,7 @@ export default function ConfirmDelete({
 
             <div>
                 <Button
-                    variation="secondary"
+                    $variation="secondary"
                     disabled={disabled}
                     onClick={onClose}
                 >
@@ -45,7 +45,7 @@ export default function ConfirmDelete({
                 </Button>
 
                 <Button
-                    variation="danger"
+                    $variation="danger"
                     disabled={disabled}
                     onClick={onConfirm}
                 >

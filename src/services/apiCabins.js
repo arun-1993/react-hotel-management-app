@@ -14,7 +14,7 @@ export async function getCabins() {
     return data;
 }
 
-export async function createEditCabin(cabin, id = null) {
+export async function createUpdateCabin(cabin, id = null) {
     let query = supabase.from("cabins");
     let imagePath = null;
 
