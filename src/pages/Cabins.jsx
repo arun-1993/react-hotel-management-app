@@ -10,7 +10,7 @@ export default function Cabins() {
     return (
         <Fragment>
             <Row>
-                <Heading as="h1">All cabins</Heading>
+                <Heading as="h1">Cabins</Heading>
                 <CabinTableOperations />
             </Row>
 
