@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import { useBooking } from "../../hooks/useBooking";
+import { useCheckOut } from "../../hooks/useCheckOut";
 import { useMoveBack } from "../../hooks/useMoveBack";
 import Button from "../../ui/Button";
 import ButtonGroup from "../../ui/ButtonGroup";
@@ -21,6 +22,7 @@ const HeadingGroup = styled.div`
 
 export default function BookingDetail() {
     const { isLoading, booking } = useBooking();
+    const { checkOut, isCheckingOut } = useCheckOut();
     const moveBack = useMoveBack();
     const navigate = useNavigate();
 
@@ -53,6 +55,16 @@ export default function BookingDetail() {
                         Check in
                     </Button>
                 )}
+
+                {status === "checked-in" && (
+                    <Button
+                        onClick={() => checkOut(id)}
+                        disabled={isCheckingOut}
+                    >
+                        Check out
+                    </Button>
+                )}
+
                 <Button $variation="secondary" onClick={moveBack}>
                     Back
                 </Button>

@@ -1,8 +1,9 @@
 import { format, isToday } from "date-fns";
-import { HiArrowDownOnSquare, HiEye } from "react-icons/hi2";
+import { HiArrowDownOnSquare, HiArrowUpOnSquare, HiEye } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
+import { useCheckOut } from "../../hooks/useCheckOut";
 import Menus from "../../ui/Menus";
 import Table from "../../ui/Table";
 import Tag from "../../ui/Tag";
@@ -37,8 +38,10 @@ const Amount = styled.div`
 
 export default function BookingRow({ booking }) {
     const navigate = useNavigate();
+    const { checkOut, isCheckingOut } = useCheckOut();
 
     const {
+        id: bookingId,
         startDate,
         endDate,
         numNights,
@@ -83,12 +86,12 @@ export default function BookingRow({ booking }) {
             <Amount>{formatCurrency(totalPrice)}</Amount>
 
             <Menus.Menu>
-                <Menus.Toggle menuId={booking.id} />
+                <Menus.Toggle menuId={bookingId} />
 
-                <Menus.List menuId={booking.id}>
+                <Menus.List menuId={bookingId}>
                     <Menus.Button
                         icon={<HiEye />}
-                        onClick={() => navigate(`/bookings/${booking.id}`)}
+                        onClick={() => navigate(`/bookings/${bookingId}`)}
                     >
                         View details
                     </Menus.Button>
@@ -96,9 +99,19 @@ export default function BookingRow({ booking }) {
                     {status === "unconfirmed" && (
                         <Menus.Button
                             icon={<HiArrowDownOnSquare />}
-                            onClick={() => navigate(`/checkin/${booking.id}`)}
+                            onClick={() => navigate(`/checkin/${bookingId}`)}
                         >
                             Check in
+                        </Menus.Button>
+                    )}
+
+                    {status === "checked-in" && (
+                        <Menus.Button
+                            icon={<HiArrowUpOnSquare />}
+                            onClick={() => checkOut(bookingId)}
+                            disabled={isCheckingOut}
+                        >
+                            Check out
                         </Menus.Button>
                     )}
                 </Menus.List>
