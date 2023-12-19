@@ -1,5 +1,6 @@
 import { useBookings } from "../../hooks/useBookings";
 import Empty from "../../ui/Empty";
+import Menus from "../../ui/Menus";
 import Pagination from "../../ui/Pagination";
 import Spinner from "../../ui/Spinner";
 import Table from "../../ui/Table";
@@ -23,12 +24,14 @@ export default function BookingTable() {
                 <div></div>
             </Table.Header>
 
-            <Table.Body
-                data={bookings}
-                render={(booking) => (
-                    <BookingRow key={booking.id} booking={booking} />
-                )}
-            />
+            <Menus>
+                <Table.Body
+                    data={bookings}
+                    render={(booking) => (
+                        <BookingRow key={booking.id} booking={booking} />
+                    )}
+                />
+            </Menus>
 
             <Table.Footer>
                 <Pagination count={count} />

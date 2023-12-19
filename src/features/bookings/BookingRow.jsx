@@ -1,6 +1,9 @@
 import { format, isToday } from "date-fns";
+import { HiEye } from "react-icons/hi2";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
+import Menus from "../../ui/Menus";
 import Table from "../../ui/Table";
 import Tag from "../../ui/Tag";
 import { formatCurrency, formatDistanceFromNow } from "../../utils/helpers";
@@ -33,6 +36,8 @@ const Amount = styled.div`
 `;
 
 export default function BookingRow({ booking }) {
+    const navigate = useNavigate();
+
     const {
         startDate,
         endDate,
@@ -76,6 +81,19 @@ export default function BookingRow({ booking }) {
             <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
 
             <Amount>{formatCurrency(totalPrice)}</Amount>
+
+            <Menus.Menu>
+                <Menus.Toggle menuId={booking.id} />
+
+                <Menus.List menuId={booking.id}>
+                    <Menus.Button
+                        icon={<HiEye />}
+                        onClick={() => navigate(`/bookings/${booking.id}`)}
+                    >
+                        View details
+                    </Menus.Button>
+                </Menus.List>
+            </Menus.Menu>
         </Table.Row>
     );
 }
