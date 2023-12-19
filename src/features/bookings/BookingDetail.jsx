@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import { useBooking } from "../../hooks/useBooking";
@@ -21,6 +22,7 @@ const HeadingGroup = styled.div`
 export default function BookingDetail() {
     const { isLoading, booking } = useBooking();
     const moveBack = useMoveBack();
+    const navigate = useNavigate();
 
     if (isLoading) return <Spinner />;
 
@@ -46,6 +48,11 @@ export default function BookingDetail() {
             <BookingDataBox booking={booking} />
 
             <ButtonGroup>
+                {status === "unconfirmed" && (
+                    <Button onClick={() => navigate(`/checkin/${booking.id}`)}>
+                        Check in
+                    </Button>
+                )}
                 <Button $variation="secondary" onClick={moveBack}>
                     Back
                 </Button>

@@ -148,7 +148,11 @@ export default function BookingDataBox({ booking }) {
                     )}
                     <p>
                         {guestName}{" "}
-                        {numGuests > 1 ? `+ ${numGuests - 1} guests` : ""}
+                        {numGuests > 1
+                            ? `+ ${numGuests - 1} ${
+                                  numGuests > 2 ? "guests" : "guest"
+                              }`
+                            : ""}
                     </p>
                     <span>&bull;</span>
                     <p>{email}</p>
@@ -159,7 +163,7 @@ export default function BookingDataBox({ booking }) {
                 {notes && (
                     <DataItem
                         icon={<HiOutlineChatBubbleBottomCenterText />}
-                        label="Observations"
+                        label="Notes"
                     >
                         {notes}
                     </DataItem>

@@ -24,7 +24,8 @@ export default function DataItem({ icon, label, children }) {
     return (
         <StyledDataItem>
             <Label>
-                {icon} <span>{label}</span>
+                {icon}
+                <span>{label}</span>
             </Label>
             {children}
         </StyledDataItem>
