@@ -11,12 +11,19 @@ import PageNotFound from "./pages/PageNotFound";
 import Settings from "./pages/Settings";
 import Users from "./pages/Users";
 import AppLayout from "./ui/AppLayout";
+import ProtectedRoute from "./ui/ProtectedRoute";
 
 export default function App() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route element={<AppLayout />}>
+                <Route
+                    element={
+                        <ProtectedRoute>
+                            <AppLayout />
+                        </ProtectedRoute>
+                    }
+                >
                     <Route
                         index
                         element={<Navigate replace to="dashboard" />}
