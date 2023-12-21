@@ -8,7 +8,7 @@ export default function Logout() {
     const { isLoggingOut, logout } = useLogout();
 
     return (
-        <ButtonIcon onClick={logout} disabled={isLoggingOut}>
+        <ButtonIcon title="Logout" onClick={logout} disabled={isLoggingOut}>
             {isLoggingOut ? <SpinnerMini /> : <HiArrowRightOnRectangle />}
         </ButtonIcon>
     );
